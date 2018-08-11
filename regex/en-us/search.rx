@@ -1,0 +1,1 @@
+(web search) (google|pirate bay) (for) (?P<Search>.*)
