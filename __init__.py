@@ -29,7 +29,7 @@ class WebSearchSkill(MycroftSkill):
     # pieces, and is triggered when the user's utterance matches the pattern
     # defined by the keywords.  In this case, the match occurs when one word
     # is found from each of the files:
-    @intent_handler(IntentBuilder("").require("Web.Search")
+    @intent_handler(IntentBuilder("").require("Web.Search"))
     def handle_web_search_intent(self, message):
         # In this case, respond by simply speaking a canned response.
         # Mycroft will randomly speak one of the lines from the file
