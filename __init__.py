@@ -1,20 +1,13 @@
-# TODO: Add an appropriate license to your skill before publishing.  See
-# the LICENSE file for more information.
-
-# Below is the list of outside modules you'll be using in your skill.
-# They might be built-in to Python, from mycroft-core or from external
-# libraries.  If you use an external library, be sure to include it
-# in the requirements.txt file so the library is installed properly
-# when the skill gets installed later by a user.
+import sys
+from os.path import dirname, abspath, basename
+import subprocess
 
 from adapt.intent import IntentBuilder
 from mycroft.skills.core import MycroftSkill, intent_handler
-from mycroft.util.log import LOG
+from os.path import dirname, join
 
-# Each skill is contained within its own class, which inherits base methods
-# from the MycroftSkill class.  You extend this class as shown below.
+__author__ = 'shamanon'
 
-# TODO: Change "Template" to a unique name for your skill
 class WebSearchSkill(MycroftSkill):
 
     # The constructor of the skill, which calls MycroftSkill's constructor
@@ -24,17 +17,18 @@ class WebSearchSkill(MycroftSkill):
         # Initialize working variables used within the skill.
         self.count = 0
 
-    # The "handle_xxxx_intent" function is triggered by Mycroft when the
-    # skill's intent is matched.  The intent is defined by the IntentBuilder()
-    # pieces, and is triggered when the user's utterance matches the pattern
-    # defined by the keywords.  In this case, the match occurs when one word
-    # is found from each of the files:
-    @intent_handler(IntentBuilder("").require("WebSearch").require("For"))
+    @intent_handler(IntentBuilder("").require("WebSearch").require("For").require("ForKeywords").require("search"))
     def handle_web_search_intent(self, message):
-        # In this case, respond by simply speaking a canned response.
-        # Mycroft will randomly speak one of the lines from the file
-        #    dialogs/en-us/hello.world.dialog
-        self.speak_dialog("search.for")
+        site = message.data.get("ForKeywords")
+        term = message.data.get("search")
+        if site == "pirate bay":
+            url = "https://thepiratebay.org/search/" + term.replace(" ", "%20") + "/0/99/0"
+        else:
+            url = "https://google.com/search?q=" + term.replace(" ", "+")
+            	
+        self.speak_dialog("search.for", {"term": term, "site": site} )
+        subprocess.run(["google-chrome", url])
+        
 
     # The "stop" method defines what Mycroft does when told to stop during
     # the skill's execution. In this case, since the skill's functionality
