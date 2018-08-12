@@ -29,17 +29,5 @@ class WebSearchSkill(MycroftSkill):
         self.speak_dialog("search.for", {"term": term, "site": site} )
         subprocess.run(["google-chrome", url])
         
-
-    # The "stop" method defines what Mycroft does when told to stop during
-    # the skill's execution. In this case, since the skill's functionality
-    # is extremely simple, there is no need to override it.  If you DO
-    # need to implement stop, you should return True to indicate you handled
-    # it.
-    #
-    # def stop(self):
-    #    return False
-
-# The "create_skill()" method is used to create an instance of the skill.
-# Note that it's outside the class itself.
 def create_skill():
     return WebSearchSkill()
